@@ -4,7 +4,8 @@ window.jQuery = $
 window.$ = $
 import React, { useEffect, useRef } from 'react'
 import cytoscape from 'cytoscape'
-import cytoscapeQtip from 'cytoscape-qtip'
+// Import cytoscape-qtip properly for both ESM and CommonJS compatibility
+import cytoscapeQtip from 'cytoscape-qtip/cytoscape-qtip.js'
 import 'qtip2/dist/jquery.qtip.css'
 import 'qtip2'
 
