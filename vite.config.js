@@ -13,7 +13,7 @@ export default defineConfig({
     react(),
   ],
   optimizeDeps: {
-    include: ['cytoscape-qtip']
+    include: ['react', 'react-dom', 'react-router-dom', 'cytoscape', 'cytoscape-qtip']
   },
   css: {
     preprocessorOptions: {
