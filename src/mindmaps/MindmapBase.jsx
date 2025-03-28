@@ -7,7 +7,7 @@ import cytoscape from 'cytoscape'
 import 'qtip2/dist/jquery.qtip.css'
 import 'qtip2'
 
-function MindmapBase({ elements, cyBaseStyles, containerStyle, onCytoscapeInit }) {
+function MindmapBase({ elements, cyBaseStyles, containerStyle, onCytoscapeInit, paradigmName }) {
   const cyRef = useRef(null);
 
   useEffect(() => {
@@ -83,7 +83,7 @@ function MindmapBase({ elements, cyBaseStyles, containerStyle, onCytoscapeInit }
 
   return (
     <div style={{ marginTop: '64px', paddingBottom: '60px' }}>
-      <h2>Functional Programming Mind Map</h2>
+      <h2>{paradigmName} Programming Mind Map</h2>
       <div ref={cyRef} className="mindmap-base" style={{ ...containerStyle}} />
     </div>
   );
