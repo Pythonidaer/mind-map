@@ -1,12 +1,5 @@
-import $ from 'jquery'
-window.jQuery = $
-window.$ = $
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import cytoscape from 'cytoscape'
-import * as cytoscapeQtip from 'cytoscape-qtip'
-import 'qtip2/dist/jquery.qtip.css'
-import 'qtip2'
 import MindmapBase from './mindmaps/MindmapBase'
 import Navbar from './components/Navbar'
 import cyBaseStyles from './mindmaps/shared/cyBaseStyles'
@@ -14,7 +7,6 @@ import containerStyle from './mindmaps/shared/containerStyles'
 import functionalElements from './mindmaps/functional/functionalElements'
 import functionalStyles from './mindmaps/functional/functionalStyles'
 
-cytoscapeQtip(cytoscape)
 
 function App() {
   const combinedStyles = [...cyBaseStyles, ...functionalStyles]
