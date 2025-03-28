@@ -4,7 +4,7 @@ window.$ = $
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import cytoscape from 'cytoscape'
-import cytoscapeQtip from 'cytoscape-qtip'
+import * as cytoscapeQtip from 'cytoscape-qtip'
 import 'qtip2/dist/jquery.qtip.css'
 import 'qtip2'
 import MindmapBase from './mindmaps/MindmapBase'
