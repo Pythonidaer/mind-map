@@ -4,77 +4,81 @@ window.jQuery = $
 window.$ = $
 import React, { useEffect, useRef } from 'react'
 import cytoscape from 'cytoscape'
-// Import cytoscape-qtip properly for both ESM and CommonJS compatibility
-import cytoscapeQtip from 'cytoscape-qtip/cytoscape-qtip.js'
 import 'qtip2/dist/jquery.qtip.css'
 import 'qtip2'
-
-cytoscapeQtip(cytoscape);
 
 function MindmapBase({ elements, cyBaseStyles, containerStyle, onCytoscapeInit }) {
   const cyRef = useRef(null);
 
   useEffect(() => {
-    const container = cyRef.current;
-    if (!container) {
-      console.error('Cytoscape container not found.');
-      return;
-    }
-
-    const cy = cytoscape({
-      container,
-      elements,
-      style: cyBaseStyles,
-      layout: {
-        name: 'cose',
-        directed: true,
-        padding: 30,
-        spacingFactor: 1.3,
-        animate: false,
-      },
-      boxSelectionEnabled: false,
-      autounselectify: true,
-      headless: false,
-    });
-
-    cy.ready(() => {
-      if (!cy.renderer()) {
-        console.error('Renderer not available; possibly headless mode.');
+    const initCytoscape = async () => {
+      const container = cyRef.current;
+      if (!container) {
+        console.error('Cytoscape container not found.');
         return;
       }
-      // Attach qTip tooltips
-      cy.nodes().forEach((node) => {
-        node.qtip({
-          content: node.data('definition'),
-          position: { my: 'top center', at: 'bottom center' },
-          style: {
-            classes: 'qtip-bootstrap',
-            tip: { width: 16, height: 8 },
-            'font-size': '16px',
-            'max-width': '300px',
-          },
-          show: { event: 'mouseover' },
-          hide: { event: 'mouseout' },
-        });
+
+      // Import and register qtip
+      const cytoscapeQtip = await import('cytoscape-qtip');
+      cytoscapeQtip.default(cytoscape);
+
+      const cy = cytoscape({
+        container,
+        elements,
+        style: cyBaseStyles,
+        layout: {
+          name: 'cose',
+          directed: true,
+          padding: 30,
+          spacingFactor: 1.3,
+          animate: false,
+        },
+        boxSelectionEnabled: false,
+        autounselectify: true,
+        headless: false,
       });
 
-      // Optional callback to let the parent know cytoscape is ready
-      if (onCytoscapeInit) {
-        onCytoscapeInit(cy);
-      }
-    });
+      cy.ready(() => {
+        if (!cy.renderer()) {
+          console.error('Renderer not available; possibly headless mode.');
+          return;
+        }
+        // Attach qTip tooltips
+        cy.nodes().forEach((node) => {
+          node.qtip({
+            content: node.data('definition'),
+            position: { my: 'top center', at: 'bottom center' },
+            style: {
+              classes: 'qtip-bootstrap',
+              tip: { width: 16, height: 8 },
+              'font-size': '16px',
+              'max-width': '300px',
+            },
+            show: { event: 'mouseover' },
+            hide: { event: 'mouseout' },
+          });
+        });
 
-    return () => {
-      // Cleanup
-      cy.nodes().forEach((node) => {
-        try {
-          node.qtip('destroy');
-        } catch (err) {
-          console.warn('Error destroying qTip:', err);
+        // Optional callback to let the parent know cytoscape is ready
+        if (onCytoscapeInit) {
+          onCytoscapeInit(cy);
         }
       });
-      cy.destroy();
+
+      return () => {
+        // Cleanup
+        cy.nodes().forEach((node) => {
+          try {
+            node.qtip('destroy');
+          } catch (err) {
+            console.warn('Error destroying qTip:', err);
+          }
+        });
+        cy.destroy();
+      };
     };
+
+    initCytoscape();
   }, [elements, cyBaseStyles, onCytoscapeInit]);
 
   return (
