@@ -1,4 +1,21 @@
+*, *:before, *:after, html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  background-color: #050609;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: '#f5f5f5',
+}
+
+/* Make it so that on mobile this is 95% width */
+.mindmap-base {
+  width: 80%;
+  margin: auto;
+}
+@media (max-width: 768px) {
+  .mindmap-base {
+    width: 95%;
+  }
 }
